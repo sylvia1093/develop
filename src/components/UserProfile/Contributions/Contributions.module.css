@@ -1,0 +1,90 @@
+.contributions .contribution {
+  background-color: #f8f9ff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+.contributions .contribution+.contribution {
+  margin-top: 25px;
+}
+
+.contributions .contribution .header {
+  background-color: #fff;
+  padding: 7px;
+  display: flex;
+  align-items: center;
+}
+
+.contributions .contribution .header .avatar {
+  margin-right: 30px;
+  border-radius: 12px;
+  width: 80px;
+  height: 80px;
+}
+
+.contributions .contribution .header .heading {
+  font-size: 24px;
+  margin-bottom: 5px;
+  margin: 0;
+}
+
+.contributions .contribution .header .ago {
+  color: #969ca2;
+  font-size: 17px;
+  margin: 0;
+}
+
+.contributions .contribution .desc {
+  padding: 35px 20px 20px;
+}
+
+.contributions .contribution .desc .fullDesc {
+  font-size: 24px;
+  line-height: 1.4;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  margin-top: 0;
+}
+
+.contributions .contribution .desc .footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.contributions .contribution .desc .footer .stats {
+  color: #aaa;
+  font-size: 18px;
+}
+
+.contributions .contribution .desc .footer .stats>* {
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+.contributions .contribution .desc .footer .stats>*+* {
+  margin-left: 20px;
+}
+
+.contributions .contribution .desc .footer .stats>*.views {
+  background-image: url('./img/icon-eye.png');
+}
+
+.contributions .contribution .desc .footer .stats>*.shares {
+  background-image: url('./img/icon-share.png');
+}
+
+.contributions .contribution .desc .footer .stats>*.comments {
+  background-image: url('./img/icon-comment.png');
+}
+
+.contributions .contribution .desc .footer .actions .action {
+  font-family: Poppins;
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.contributions .contribution .desc .footer .actions .action+.action {
+  margin-left: 43px;
+}

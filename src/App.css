@@ -1,0 +1,34 @@
+.auth-page-btn {
+  background-color:#111111 !important;
+  border-color: #111111 !important;
+}
+.modal-header .close span {
+  color:  #899EFF;
+}
+
+.modal-wrapper-div{
+  height:100% !important;
+  background: #635F5F29 0% 0% no-repeat padding-box;
+}
+.err-message{
+  color: #ec0b00;
+  font-size: 14px;
+}
+.spinner  {
+  position: relative;
+  top: 7px;
+  left: 10px;
+}
+.spinner-bottom  {
+  position: relative;
+  top: 7px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.home-page-col {
+  background-color: #f8f9fa;
+  padding-left: 0px !important;
+}
