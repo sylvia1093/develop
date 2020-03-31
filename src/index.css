@@ -14,7 +14,7 @@ code {
 }
 
 #root {
-  height: 100%!important;
+  /*height: 100%!important;*/
 }
 .modal-dialog {
   margin: 0 auto !important;

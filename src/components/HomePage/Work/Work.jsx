@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component, createRef} from 'react';
 import s from './Work.module.css';
+import PromotePost from "../PromotePost/PromotePost";
+import ReactPost from "../ReactPost/ReactPost";
+
+const imgURL = "https://i.pravatar.cc/80";
 
 export class Work extends Component {
   state = {
@@ -10,6 +14,41 @@ export class Work extends Component {
     views: 13,
     shares: 1,
     comments: 10
+  };
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.visiblePromotePost || this.state.visibleReactPost) {
+      document.getElementById('root').style.filter = 'blur(3px)';
+      document.getElementById('root').classList.add('cover-blur')
+
+    } else {
+      document.getElementById('root').style.filter = 'blur(0px)';
+      document.getElementById('root').classList.remove('cover-blur')
+    }
+    if (document.getElementsByClassName('PromotePost')[0] && this.state.visiblePromotePost) {
+      document.body.appendChild(document.getElementsByClassName('PromotePost')[0])
+    }
+    if (document.getElementsByClassName('ReactPost')[0] && this.state.visibleReactPost) {
+      document.body.appendChild(document.getElementsByClassName('ReactPost')[0])
+    }
+  }
+
+  showPromotePost = () => {
+    if (!this.state.visiblePromotePost) {
+      this.setState({visiblePromotePost: true})
+    } else {
+      document.querySelector('.' + s.contributions).appendChild(document.getElementsByClassName('PromotePost')[0])
+      this.setState({visiblePromotePost: false})
+    }
+  };
+
+  showReactPost = () => {
+    if (!this.state.visibleReactPost) {
+      this.setState({visibleReactPost: true})
+    } else {
+      document.querySelector('.' + s.contributions).appendChild(document.getElementsByClassName('ReactPost')[0])
+      this.setState({visibleReactPost: false})
+    }
   };
 
   render() {
@@ -59,12 +98,14 @@ export class Work extends Component {
               </div>
 
               <div className={s.actions}>
-                <span className={s.action}>Promote</span>
-                <span className={s.action}>React </span>
+                <span className={s.action} onClick={this.showPromotePost}>Promote</span>
+                <span className={s.action} onClick={this.showReactPost}>React </span>
               </div>
             </div>
           </div>
         </div>
+        {this.state.visiblePromotePost && <PromotePost cache={this.showPromotePost} modalPhoto={imgURL} modalUser={this.state.name} modalHour={this.state.ago} modalContent={this.state.desc}/> }
+        {this.state.visibleReactPost && <ReactPost cache={this.showReactPost} />}
       </div>
     );
   }

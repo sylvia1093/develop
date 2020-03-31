@@ -44,3 +44,15 @@
 .blog-card .card-body {
     background: #e5eaff !important;
 }
+
+.cover-blur:after {
+    content: '';
+    display: block;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2000;
+}

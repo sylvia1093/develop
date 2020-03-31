@@ -1,30 +1,30 @@
-import React, { Component }  from "react";
+import React, {Component} from "react";
 import styled from "styled-components";
 
 import brian from "../../image/brian.png";
 import defaultImageBackgroundUpload from './../../image/icone/imageBackground.svg'
 import pauseIcon from './../../image/icone/play-button.svg'
-import { connect } from "react-redux";
-import { push } from "react-router-redux";
-import { PublishContributionAction } from "../../store/actions/ContentAction/ContentAction";
+import {connect} from "react-redux";
+
 const Wrapper = styled.div`
-  background: rgba(255, 255, 255, 0.6);
   position: absolute;
   z-index: 213;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  width: 100%;
 
   .modal-react {
-    width: 60%;
-    height: 272px;
-    margin: 25px auto;
+    width: 80%;
+    max-width: 700px;
+    position: absolute;
+    top: 50vh;
+    left: 50%;
+    transform: translateX(-50%)  translateY(-50%); 
+    //margin: 500px auto auto auto;
     background: #fff;
     z-index: 13;
-    position: absolute;
-    top: 1%;
-    right: 25%;
     box-shadow: 0px 3px 30px #00000029;
     border-radius: 20px;
     color: #000;
@@ -41,21 +41,39 @@ const Wrapper = styled.div`
   }
 
   .modal-react-title {
-    font-size: 17px;
+    font-size: 25px;
+    font-weight: bold;
   }
 
-  .btn-close {
+ .btn-close {
+    display: block;
     text-align: center;
     line-height: 20px;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border-radius: 25px;
-    top: 5%;
-    right: 2%;
     font-size: 15px;
-    color: #899EFF;
-    border: 1px solid  #899EFF;
+    color: white;
+    background-color: #707070;
+    position: relative;
     cursor: pointer;
+    .btn-close-left, .btn-close-right {
+      width: 15px;
+      height: 1px;
+      background-color: white;
+      position: absolute;
+      top: 12px;
+      left: 5px;
+    }
+    .btn-close-left {
+      transform: rotate(-45deg);
+    }
+    .btn-close-right {
+      transform: rotate(45deg);
+    }
+    &:hover {
+      background-color: #59DEFF;
+    }
   }
 
   img {
@@ -112,10 +130,11 @@ const Wrapper = styled.div`
   .input-form-item-2 {
     display: flex;
     align-items: center;
-    padding: 5px;
+    padding: 2px;
     justify-content: space-between;
     border-top: 1px solid #00000026;
     height: 20%;
+    font-size: 14px;
   }
 
   .input-react {
@@ -142,6 +161,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     margin: 20px;
+    padding-bottom: 20px;
   }
 
   .btn-promote {
@@ -158,150 +178,111 @@ const Wrapper = styled.div`
   .item {
     margin-left:10px
   }
+  .custom-file-upload {
+    margin-top: 13px;
+    margin-right: 5px;
+  }
 `;
 
 
 class PublishContribution extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      photo: "",
-      tag: "",
-      description: "",
-      userInfo: null,
-    }
-    this.handleChange = this.handleChange.bind(this);
-    this.handlePublishContribution = this.handlePublishContribution.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.loginUser && this.props.loginUser.success) {
-      this.setState({userInfo: this.props.loginUser.data});
-    } else {
-      const data = localStorage.getItem('userInfo');
-      this.setState({userInfo: JSON.parse(data)});
-    }
-  }
-  
-  static getDerivedStateFromProps(nextProps, prevState) {
-    // console.log('aaaaa', nextProps);
-    if(nextProps.publishContribution && nextProps.publishContribution.success) {
-      nextProps.close();
-      nextProps.publishContribution.success = false;
-      return {success: true}
-    } else {
-      return null;
-    }
-  }
-
-  handleChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    if (target.type === "file") {
-      this.setState({
-        photo: target.files[0],
-      });
-    } else {
-      this.setState({
-        [name]: value
-      });
-    }
-  }
-
-  handlePublishContribution() {
-    const { photo, tag, description, userInfo } = this.state;
-    
-    if (!description) {
-      alert("Please type 'Desciption'");
-      return;
-    }
-    if (!tag) {
-      alert("Please type 'Tag'");
-      return;
-    }
-    if (!photo) {
-      alert("Please select 'File'");
-      return;
+    constructor(props) {
+        super(props);
+        this.state = {
+            photo: "",
+            tag: "",
+            description: "",
+            userInfo: null,
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handlePublishContribution = this.handlePublishContribution.bind(this);
     }
 
-    const data = {
-      userId: userInfo.userId,
-      tag: tag,
-      description: description,
-      photo: photo,
+    componentDidMount() {
+
     }
-    this.props.onPublishContributionAction(data, userInfo.token);
-  }
-  render() {
-    return(
-      <Wrapper>
-        <div className="modal-react">
-          <div className="modal-react-top">
-            <h1 className="modal-react-title">Publish a contribution</h1>
-            <div className="btn-close" onClick={this.props.close}>
-              X
-            </div>
-          </div>
-          <div className="modal-react-form">
-            <div className="input-form">
-              <div className="input-form-item-1">
-                <img src={brian} alt="profile" />
-                <textarea
-                  className="input-react"
-                  name="description"
-                  placeholder="Feelings inspired ? share your thoughts...."
-                  onChange={this.handleChange} 
-                />
-              </div>
-              <div className="input-form-item-2">
-                <input className="input-tags" placeholder="#Tags" 
-                  name="tag"
-                  onChange={this.handleChange} />
-                <div className="item">
-                  <input
-                    style={{ display: "none" }}
-                    id="file-upload"
-                    type="file"
-                    name="photo"
-                    onChange={this.handleChange} 
-                  />
-                  <label htmlFor="file-upload" className="custom-file-upload">
-                    <img alt="bg" style={{width:'20px'}} src={defaultImageBackgroundUpload} />
-                  </label>
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        // console.log('aaaaa', nextProps);
+        if (nextProps.publishContribution && nextProps.publishContribution.success) {
+            nextProps.close();
+            nextProps.publishContribution.success = false;
+            return {success: true}
+        } else {
+            return null;
+        }
+    }
+
+    handleChange(event) {
+
+    }
+
+    handlePublishContribution() {
+        //handle publish action
+    }
+
+    render() {
+        return (
+            <Wrapper className="PublishContribution">
+                <div className="modal-react">
+                    <div className="modal-react-top">
+                        <h1 className="modal-react-title">Publish a contribution</h1>
+                        <div className="btn-close" onClick={this.props.close}>
+                            <div className="btn-close-left"></div>
+                            <div className="btn-close-right"></div>
+                        </div>
+                    </div>
+                    <div className="modal-react-form">
+                        <div className="input-form">
+                            <div className="input-form-item-1">
+                                <img src={brian} alt="profile"/>
+                                <textarea
+                                    className="input-react"
+                                    name="description"
+                                    placeholder="Feelings inspired ? share your thoughts...."
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                            <div className="input-form-item-2">
+                                <input className="input-tags" placeholder="#Tags"
+                                       name="tag"
+                                       onChange={this.handleChange}/>
+                                <div className="item">
+                                    <img alt="pause" style={{width: '20px'}} src={pauseIcon}></img>
+                                </div>
+                                <div className="item">
+                                    <input
+                                        style={{display: "none"}}
+                                        id="file-upload"
+                                        type="file"
+                                        name="photo"
+                                        onChange={this.handleChange}
+                                    />
+                                    <label htmlFor="file-upload" className="custom-file-upload">
+                                        <img alt="bg" style={{width: '20px'}} src={defaultImageBackgroundUpload}/>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal-promote-bottom">
+                        <button onClick={() => this.handlePublishContribution()} className="btn-promote">Publish
+                        </button>
+                    </div>
                 </div>
-                <div className="item">
-                  <img alt="pause" style={{width:'20px'}} src={pauseIcon}></img>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="modal-promote-bottom">
-            <button onClick={()=>this.handlePublishContribution()}  className="btn-promote">Publish</button>
-          </div>
-        </div>
-      </Wrapper>
-    );
-  }
-    
+            </Wrapper>
+        );
+    }
+
 }
 
 const state = (state, ownProps = {}) => {
-  return {
-    publishContribution: state.contentReducer.data,
-    location: state.location,
-    loginUser: state.loginUser.data,
-  }
+    return {}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    navigateTo: (location) => {
-      dispatch(push(location));
-    },
-    onPublishContributionAction: (data, token) => dispatch(PublishContributionAction(data, token))
-  }
+    return {}
 };
 
 export default connect(state, mapDispatchToProps)(PublishContribution);
