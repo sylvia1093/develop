@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import styled from "styled-components";
 import defaultImageBackgroundUpload from "./../../image/icone/imageBackground.svg";
+import ChevronUpSolid from "./../../image/icone/chevron-up-solid.svg";
 
 import {connect} from "react-redux";
 
@@ -109,11 +110,13 @@ const Wrapper = styled.div`
   
   ul.input-react {
    width: 217px;
-       padding-left: 0px;
+   padding-left: 0px;
    font-size: 17px;
    list-style-type: none;
-   height: 27px;
+   height: 100%;
    margin: 0;
+   position: absolute;
+   right: 33px;
 
    li {
     background: #f1f1f1;
@@ -136,17 +139,26 @@ const Wrapper = styled.div`
     display: flex;
     margin-top: 15px;
     position: relative;
+    label {
+      margin-bottom: 3px;
+    }
   }
   
   .select-arrow {
     position: absolute;
     right: 0;
-    bottom: 5px;
+    bottom: 0;
     height: 27px;
     width: 27px;  
     background-color: #FFFFFF;
     box-shadow: 0px 3px 6px #0000001A;
     border: 0.5px solid #70707036;
+    border-radius: 5px;
+    img {
+      width: 100%;
+      height: 12px;
+      transition: transform 0.5s ease;
+    }
   }
   
   .rotate-arrow {
@@ -188,7 +200,7 @@ const Wrapper = styled.div`
     display: inline-block;
     width: 140px;
     text-align: right;
-  }​
+  
 `;
 
 class PublishWork extends Component {
@@ -231,14 +243,32 @@ class PublishWork extends Component {
 
     openSelect = (event) => {
         if (!this.state.listOpened) {
-            event.currentTarget.classList.add('rotate-arrow')
-            event.currentTarget.lastChild.classList.add('open-list')
+            event.currentTarget.classList.add('rotate-arrow');
+            event.currentTarget.lastChild.classList.add('open-list');
+            document.querySelector('.select-arrow img').style.transform = 'rotate(-180deg)';
             this.setState({listOpened: true})
         } else {
-            event.currentTarget.classList.remove('rotate-arrow')
-            event.currentTarget.lastChild.classList.remove('open-list')
+            event.currentTarget.classList.remove('rotate-arrow');
+            event.currentTarget.lastChild.classList.remove('open-list');
+            document.querySelector('.select-arrow img').style.transform = 'rotate(0deg)';
             this.setState({listOpened: false})
         }
+    };
+
+    selectItem = (event) => {
+        if (event.target.tagName === 'LI' && event.target.innerText !== '') {
+            const elemsLi = document.querySelectorAll('ul.input-react li');
+            for (let elem of elemsLi) {
+                elem.style.display = 'none';
+                if (elem.innerText === '') {
+                    elem.remove()
+                }
+            }
+            event.target.parentNode.prepend(event.target);
+            event.target.style.display = 'block'
+
+        }
+
     }
 
     render() {
@@ -287,9 +317,9 @@ class PublishWork extends Component {
                 </span>
                                 <span style={{position: 'relative'}}>
                                     <div className="select-wrapper" onClick={this.openSelect}>
-                  <label style={{fontWeight: 'bold', marginRight: '15px'}}>Work Type</label>
-                                        <div className="select-arrow"></div>
-                                        <ul className='input-react'>
+                                        <label style={{fontWeight: 'bold', marginRight: '15px'}}>Work Type</label>
+                                        <div className="select-arrow"><img src={ChevronUpSolid}/></div>
+                                        <ul className='input-react' onClick={this.selectItem}>
                                             <li></li>
                                             <li>Painting</li>
                                             <li>Photography</li>
